@@ -85,7 +85,7 @@ for INP_DATE in date_str:
                     lambda x: x['available_capacity'])
                 df['date'] = df.sessions.apply(lambda x: x['date'])
                 df = df[["date", "available_capacity", "vaccine", "min_age_limit", "pincode", "name",
-                         "state_name", "district_name", "block_name", "fee_type"]]  
+                         "state_name", "district_name", "block_name", "fee_type"]]
                 if final_df is not None:
                     final_df = pd.concat([final_df, df])
                 else:
@@ -120,7 +120,7 @@ if (final_df is not None) and (len(final_df)):
             final_df = filter_column(final_df, "Fees", pay_inp)
 
     with right_column_2a:
-        valid_capacity = ["available"]
+        valid_capacity = ["Available"]
         cap_inp = st.selectbox('Select Availablilty', [""] + valid_capacity)
         if cap_inp != "":
             final_df = filter_capacity(final_df, "Available Capacity", 0)
