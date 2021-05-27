@@ -17,6 +17,10 @@ def filter_column(df, col, value):
     df_temp = deepcopy(df.loc[df[col] == value, :])
     return df_temp
 
+def filter_capacity(df, col, value):
+    df_temp = deepcopy(df.loc[df[col] > value, :])
+    return df_temp
+
 
 mapping_df = load_mapping()
 
@@ -82,7 +86,7 @@ if (final_df is not None) and (len(final_df)):
     final_df.drop_duplicates(inplace=True)
     final_df.rename(columns=rename_mapping, inplace=True)
 
-    left_column_2, center_column_2, right_column_2 = st.beta_columns(3)
+    left_column_2, center_column_2, right_column_2, right_column_2a = st.beta_columns(4)
     with left_column_2:
         valid_pincodes = list(np.unique(final_df["Pincode"].values))
         pincode_inp = st.selectbox('Select Pincode', [""] + valid_pincodes)
@@ -101,8 +105,15 @@ if (final_df is not None) and (len(final_df)):
         if pay_inp != "":
             final_df = filter_column(final_df, "Fees", pay_inp)
 
+    with right_column_2a:
+        valid_capacity = ["available"]
+        cap_inp = st.selectbox('Select Availablilty', [""] + valid_capacity)
+        if cap_inp != "":
+            final_df = filter_capacity(final_df, "Available Capacity", 0)
+
     table = deepcopy(final_df)
     table.reset_index(inplace=True, drop=True)
     st.table(table)
 else:
-  st.error("Unable to fetch data currently")
+    st.error("Unable to fetch data currently")
+
