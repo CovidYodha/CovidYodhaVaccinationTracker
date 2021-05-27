@@ -5,24 +5,24 @@ import requests
 import pandas as pd
 import streamlit as st
 from copy import deepcopy
+from fake_useragent import UserAgent
 
+# browser_header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
+# browser_header = {'User-Agent': 'Mozilla/5.0 (Linux; Android 10; ONEPLUS A6000) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.99 Mobile Safari/537.36'}
 
 st.set_page_config(layout='wide',
                    initial_sidebar_state='collapsed',
                    page_icon="https://www.cowin.gov.in/favicon.ico",
                    page_title="CoWIN Vaccination Slot Availability")
 
-
 @st.cache(allow_output_mutation=True, suppress_st_warning=True)
 def load_mapping():
     df = pd.read_csv("district_mapping.csv")
     return df
 
-
 def filter_column(df, col, value):
     df_temp = deepcopy(df.loc[df[col] == value, :])
     return df_temp
-
 
 def filter_capacity(df, col, value):
     df_temp = deepcopy(df.loc[df[col] > value, :])
@@ -32,7 +32,7 @@ def filter_capacity(df, col, value):
 mapping_df = load_mapping()
 
 mapping_dict = pd.Series(mapping_df["district id"].values,
-                         index=mapping_df["district name"].values).to_dict()
+                         index = mapping_df["district name"].values).to_dict()
 
 rename_mapping = {
     'date': 'Date',
@@ -41,11 +41,11 @@ rename_mapping = {
     'vaccine': 'Vaccine',
     'pincode': 'Pincode',
     'name': 'Hospital Name',
-    'state_name': 'State',
-    'district_name': 'District',
+    'state_name' : 'State',
+    'district_name' : 'District',
     'block_name': 'Block Name',
-    'fee_type': 'Fees'
-}
+    'fee_type' : 'Fees'
+    }
 
 st.title('CoWIN Vaccination Slot Availability')
 st.info('The CoWIN APIs are geo-fenced so sometimes you may not see an output! Please try after sometime ')
@@ -72,8 +72,7 @@ browser_header = {'User-Agent': temp_user_agent.random}
 
 final_df = None
 for INP_DATE in date_str:
-    URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={}&date={}".format(
-        DIST_ID, INP_DATE)
+    URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={}&date={}".format(DIST_ID, INP_DATE)
     response = requests.get(URL, headers=browser_header)
     if (response.ok) and ('centers' in json.loads(response.text)):
         resp_json = json.loads(response.text)['centers']
@@ -81,14 +80,11 @@ for INP_DATE in date_str:
             df = pd.DataFrame(resp_json)
             if len(df):
                 df = df.explode("sessions")
-                df['min_age_limit'] = df.sessions.apply(
-                    lambda x: x['min_age_limit'])
+                df['min_age_limit'] = df.sessions.apply(lambda x: x['min_age_limit'])
                 df['vaccine'] = df.sessions.apply(lambda x: x['vaccine'])
-                df['available_capacity'] = df.sessions.apply(
-                    lambda x: x['available_capacity'])
+                df['available_capacity'] = df.sessions.apply(lambda x: x['available_capacity'])
                 df['date'] = df.sessions.apply(lambda x: x['date'])
-                df = df[["date", "available_capacity", "vaccine", "min_age_limit", "pincode",
-                         "name", "state_name", "district_name", "block_name", "fee_type"]]
+                df = df[["date", "available_capacity", "vaccine", "min_age_limit", "pincode", "name", "state_name", "district_name", "block_name", "fee_type"]]
                 if final_df is not None:
                     final_df = pd.concat([final_df, df])
                 else:
@@ -102,8 +98,7 @@ if (final_df is not None) and (len(final_df)):
     final_df.drop_duplicates(inplace=True)
     final_df.rename(columns=rename_mapping, inplace=True)
 
-    left_column_2, center_column_2, right_column_2, right_column_2a,  right_column_2b = st.beta_columns(
-        5)
+    left_column_2, center_column_2, right_column_2, right_column_2a,  right_column_2b = st.beta_columns(5)
     with left_column_2:
         valid_pincodes = list(np.unique(final_df["Pincode"].values))
         pincode_inp = st.selectbox('Select Pincode', [""] + valid_pincodes)
@@ -138,4 +133,4 @@ if (final_df is not None) and (len(final_df)):
     table.reset_index(inplace=True, drop=True)
     st.table(table)
 else:
-    st.error("Unable to fetch data currently")
+    st.error("Unable to fetch data currently, please try after sometime")
