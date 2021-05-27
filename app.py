@@ -74,7 +74,7 @@ for INP_DATE in date_str:
                 df['vaccine'] = df.sessions.apply(lambda x: x['vaccine'])
                 df['available_capacity'] = df.sessions.apply(lambda x: x['available_capacity'])
                 df['date'] = df.sessions.apply(lambda x: x['date'])
-               df = df[["date", "available_capacity", "vaccine", "min_age_limit", "pincode", "name", "state_name", "district_name", "block_name", "fee_type"]]
+               df = df[["date", "available_capacity", "vaccine", "min_age_limit", "pincode", "name", "state_name", "district_name", "block_name", "fee_type"]] #Vaccine name added
                 if final_df is not None:
                     final_df = pd.concat([final_df, df])
                 else:
@@ -118,4 +118,5 @@ if (final_df is not None) and (len(final_df)):
     st.table(table)
 else:
     st.error("Unable to fetch data currently")
+    
 
