@@ -41,7 +41,7 @@ rename_mapping = {
     }
 
 st.title('CoWIN Vaccination Slot Availability')
-st.info('The CoWIN APIs are geo-fenced so sometimes you may not see an output! Please try after sometime ')
+st.title('Finally hogaya')
 
 valid_states = list(np.unique(mapping_df["state_name"].values))
 
@@ -136,6 +136,6 @@ if (final_df is not None) and (len(final_df)):
     table.reset_index(inplace=True, drop=True)
     st.table(table)
 else:
-    st.error("Unable to fetch data currently, please try after sometime")
+    st.error("Unable to fetch data currently")
 
 
