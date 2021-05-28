@@ -71,7 +71,7 @@ with right_column_1:
 DIST_ID = mapping_dict[dist_inp]
 
 base = datetime.datetime.today()
-date_list = [base + datetime.timedelta(days=x) for x in range(numdays)]
+date_list = [base + datetime.timedelta(days=x) for x in range(1, 2)]
 date_str = [x.strftime("%d-%m-%Y") for x in date_list]
 
 temp_user_agent = UserAgent()
