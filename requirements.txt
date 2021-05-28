@@ -1,5 +1,5 @@
 streamlit==0.82.0
-numpy
-pandas
+numpy==1.16.0
+pandas==1.2.4
 requests
 fake-useragent
