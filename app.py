@@ -44,7 +44,7 @@ rename_mapping = {
     'fee_type': 'Fees'
 }
 
-st.title('Covid Vaccination Slot Availability')
+st.title('CoWIN Vaccination Slot Availability')
 # st.title('Finally hogaya')
 
 valid_states = list(np.unique(mapping_df["state_name"].values))
@@ -71,13 +71,13 @@ with right_column_1:
 DIST_ID = mapping_dict[dist_inp]
 
 base = datetime.datetime.today()
-date_list = [base + datetime.timedelta(days=x) for x in range(1, 2)]
+date_list = [base + datetime.timedelta(days=x) for x in range(numdays)]
 date_str = [x.strftime("%d-%m-%Y") for x in date_list]
 
 temp_user_agent = UserAgent()
 browser_header = {'User-Agent': temp_user_agent.random}
 
-final_df = pd.DataFrame()
+final_df = None
 for INP_DATE in date_str:
     URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={}&date={}".format(
         DIST_ID, INP_DATE)
