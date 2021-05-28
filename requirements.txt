@@ -1,5 +1,5 @@
 streamlit==0.82.0
-numpy==1.16.0
+numpy==1.20.2
 pandas==1.2.4
-requests
-fake-useragent
+requests==2.25.1
+fake-useragent== 0.1.11
