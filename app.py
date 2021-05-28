@@ -44,7 +44,7 @@ rename_mapping = {
     'fee_type': 'Fees'
 }
 
-st.title('CoWIN Vaccination Slot Availability')
+st.title('Covid Vaccination Slot Availability')
 # st.title('Finally hogaya')
 
 valid_states = list(np.unique(mapping_df["state_name"].values))
