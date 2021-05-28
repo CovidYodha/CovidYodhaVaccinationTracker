@@ -77,7 +77,7 @@ date_str = [x.strftime("%d-%m-%Y") for x in date_list]
 temp_user_agent = UserAgent()
 browser_header = {'User-Agent': temp_user_agent.random}
 
-final_df = None
+final_df = pd.DataFrame()
 for INP_DATE in date_str:
     URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={}&date={}".format(
         DIST_ID, INP_DATE)
